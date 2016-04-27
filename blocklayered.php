@@ -1999,7 +1999,7 @@ class BlockLayered extends Module
 				Db::getInstance(_PS_USE_SQL_SLAVE_)->execute('DELETE FROM '._DB_PREFIX_.'cat_filter_restriction WHERE id_product IN ('.implode(',', $product_id_delete_list).')');
 			}
 		}
-		$this->nbr_products = Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue('SELECT COUNT(*) FROM '._DB_PREFIX_.'cat_filter_restriction');
+		$this->nbr_products = Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue('SELECT COUNT(*) FROM '._DB_PREFIX_.'cat_filter_restriction', true, false);
 
 		if ($this->nbr_products == 0)
 			$this->products = array();
@@ -2034,7 +2034,7 @@ class BlockLayered extends Module
 			'.Product::sqlStock('p', 0).'
 			WHERE '.$alias_where.'.`active` = 1 AND '.$alias_where.'.`visibility` IN ("both", "catalog")
 			ORDER BY '.Tools::getProductsOrder('by', Tools::getValue('orderby'), true).' '.Tools::getProductsOrder('way', Tools::getValue('orderway')).' , cp.id_product'.
-			' LIMIT '.(((int)$this->page - 1) * $n.','.$n));
+			' LIMIT '.(((int)$this->page - 1) * $n.','.$n), true, false);
 		}
 
 		if (Tools::getProductsOrder('by', Tools::getValue('orderby'), true) == 'p.price')
